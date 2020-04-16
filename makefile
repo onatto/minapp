@@ -9,7 +9,7 @@ LNXSTRIP=strip
 LNXOUT=runtime/lnx
 LNXEXT=extlibs/lnx
 LNXOBJ=$(LNXEXT)/amalgam.o
-LNXLIBS=$(LNXOBJ) -ldl -lm -lpthread -lX11 -lGL  
+LNXLIBS=-ldl -lm -lpthread -lX11 -lGL  
 LNXCC=gcc $(LNXFLAGS) $(LNXLIBDIRS)
 ########################################################################################
 WINFLAGS=$(OPT) $(FLAGS) -DLNX_=0 -DWIN_=1
@@ -18,13 +18,13 @@ WINSTRIP=x86_64-w64-mingw32-strip
 WINOUT=runtime/win
 WINEXT=extlibs/mingw
 WINOBJ=$(WINEXT)/amalgam.o
-WINLIBS=$(WINOBJ) -lgdi32
+WINLIBS=-lgdi32
 WINCC=x86_64-w64-mingw32-gcc $(WINFLAGS) $(WINLIBDIRS)
 ########################################################################################
 
 src/app.c:
-	$(LNXCC) $*.c $(LIBS) $(LNXLIBS) -o runtime/lnx/app
-	$(WINCC) $*.c $(LIBS) $(WINLIBS) -o runtime/win/app.exe
+	$(LNXCC) $*.c $(LIBS) $(LNXOBJ) $(LNXLIBS) -o runtime/lnx/app
+	$(WINCC) $*.c $(LIBS) $(WINOBJ) $(WINLIBS) -o runtime/win/app.exe
 
 3rdparty/amalgam.c:
 	$(LNXCC) -c $*.c $(LNXLIBS) $(LIBS) -o $(LNXEXT)/amalgam.o
